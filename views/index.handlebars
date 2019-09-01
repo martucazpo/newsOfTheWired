@@ -8,10 +8,10 @@
 <div class="row">
     <div class="col s2"></div>
     <div class="col s8 left-align">
-        {{#each articles}}
+        {{#each id }}
         <div class="card-panel">
-            <h4{{this.title}}></h4>
-            <a href="/articles/{{this.id}}" class="waves-effect light-waves btn" id="btnSignUp">Read Article</a>
+            <h4{{title}}></h4>
+             <a href="{{link}}" class="waves-effect light-waves btn" id="btnSignUp">Read Article</a>
         </div>
         {{/each}}
     </div>
