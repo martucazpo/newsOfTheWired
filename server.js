@@ -26,10 +26,17 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+var exphbs = require("express-handlebars");
+app.engine("handlebars",exphbs({defaultLayout:"main"}));
+app.set("view engine","handlebars");
+
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/mongoHeadlines", { useNewUrlParser: true });
 
 // Routes
+app.get("/",function(req, res){
+  res.render("index");
+});
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
@@ -117,6 +124,7 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
 
 // Start the server
 app.listen(PORT, function() {
