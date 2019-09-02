@@ -11,14 +11,8 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var getTitle = function(data){
-  return data.title;
-};
-var getId = function(data){
-  return data._id;
-};
-var getLink = function(data){
-  return data.link;
+var getVal = function (data) {
+  return data;
 };
 
 var PORT = 3000;
@@ -96,15 +90,18 @@ app.get("/scrape", function (req, res) {
 app.get("/articles", function (req, res) {
   // Grab every document in the Articles collection
   db.Article.find({})
-    .then(function(data) {
-    var obj = {
-      id : data.map(getId),
-      title : data.map(getTitle),
-      link : data.map(getLink)
-    };
-    // If we were able to successfully find Articles, send them back to the client
-     // console.log(obj);
-      res.render("index", obj);
+    .then(function (data) {
+
+      hbsObj = {
+        data : data,
+        id : data._id,
+        title : data.title,
+        link : data.link,
+      };
+      // If we were able to successfully find Articles, send them back to the client
+
+      res.render("index", hbsObj);
+      
     })
     .catch(function (err) {
       // If an error occurred, send it to the client
