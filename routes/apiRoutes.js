@@ -72,6 +72,15 @@ module.exports = function (app) {
       });
   });
 
+  app.get("/articles/:id", function(req, res){
+    db.Article.find({})
+    .then(function (data){
+      res.render("articles", {articles : data});
+    })
+    .catch(function(err){
+      res.json(err);
+    });
+  });
 
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function (req, res) {
