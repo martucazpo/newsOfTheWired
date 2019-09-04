@@ -1,4 +1,9 @@
 var db = require("../models");
+var axios = require("axios");
+var express = require("express");
+var logger = require("morgan");
+var mongoose = require("mongoose");
+var cheerio = require("cheerio");
 
 
 module.exports = function (app) {
@@ -72,7 +77,7 @@ module.exports = function (app) {
       });
   });
 
-  app.get("/articles/:id", function(req, res){
+ /* app.get("/articles/:id", function(req, res){
     db.Article.find({})
     .then(function (data){
       res.render("articles", {articles : data});
@@ -80,7 +85,7 @@ module.exports = function (app) {
     .catch(function(err){
       res.json(err);
     });
-  });
+  });*/
 
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function (req, res) {
@@ -90,14 +95,16 @@ module.exports = function (app) {
       })
       // ..and populate all of the notes associated with it
       .populate("note")
-      .then(function (dbArticle) {
-        // If we were able to successfully find an Article with the given id, send it back to the client
-        res.json(dbArticle);
+      .then(function (data) {
+        // If we were able o successfully find an Article with the given id, send it back to the client
+        res.render("articles", {articles : data});
+       // console.log(data);
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
         res.json(err);
       });
+    
   });
 
   // Route for saving/updating an Article's associated Note
@@ -125,5 +132,18 @@ module.exports = function (app) {
         res.json(err);
       });
   });
+
+  app.get("/clearAll", function(req, res){
+    db.Article.remove({}, function(err,doc){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log("removed all articles");
+      }
+    });
+    res.redirect("/articles-json");
+  });
+  
 
 };

@@ -2,17 +2,22 @@
     <h1 class="card z-depth-3 center-align">Read the Latest from NPR's Strange News</h1>
     <div class="row">
         <div class="col s3"></div>
-        <h5 class="card z-depth-3 center-align col s6">Click Scrape to get the Most Recent Articles</h5>
+        <h5 class="card z-depth-3 center-align col s6">Click Comment to Comment on These Articles</h5>
     </div>
 </div>
 <div class="row">
     <div class="col s2"></div>
     <div class="col s8 left-align">
         {{#each articles}}
-        <div class="card-panel">
-            <h5>{{title}}</h5>
-            <a href="{{link}}" class="waves-effect light-waves btn" id="btnSignUp">Read Article</a>
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">{{title}}</span>
+                <div class="card-action">
+                    <a href="{{link}}" class="waves-effect light-waves btn" id="readbtn">Read Article</a>
+                    <a href="/articles/{{id}}" class="waves-effect light-waves btn" id="notebtn">Comment</a>
+                </div>
+            </div>
         </div>
-        {{/each}} 
+        {{/each}}
     </div>
 </div>
