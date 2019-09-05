@@ -126,6 +126,7 @@ module.exports = function (app) {
       .then(function (dbArticle) {
         // If we were able to successfully update an Article, send it back to the client
         res.json(dbArticle);
+        console.log("article updated!!!");
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
