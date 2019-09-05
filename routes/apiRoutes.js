@@ -77,15 +77,15 @@ module.exports = function (app) {
       });
   });
 
- /* app.get("/articles/:id", function(req, res){
-    db.Article.find({})
-    .then(function (data){
-      res.render("articles", {articles : data});
-    })
-    .catch(function(err){
-      res.json(err);
-    });
-  });*/
+  app.get("/notes-json", function (req, res) {
+    db.Note.find({})
+      .then(function (dbNote) {
+        res.json(dbNote);
+      })
+      .catch(function (err) {
+        res.json(err);
+      });
+  });
 
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function (req, res) {
@@ -145,6 +145,17 @@ module.exports = function (app) {
     });
     res.redirect("/articles-json");
   });
-  
+
+  app.get("/clearAllNotes", function(req, res){
+    db.Note.remove({}, function(err,doc){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log("removed all notes");
+      }
+    });
+    res.redirect("/articles-json");
+  });  
 
 };

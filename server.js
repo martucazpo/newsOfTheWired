@@ -33,6 +33,10 @@ mongoose.connect("mongodb://localhost/mongoHeadlines", {
   useNewUrlParser: true
 });
 
+mongoose.connect("mongodb://localhost/mongoHeadlines", { 
+  useFindAndModify: false
+ });
+
 var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({
   defaultLayout: "main",partialsDir: __dirname + "/views/partials/"
