@@ -10,11 +10,16 @@ var cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
+var Article = require("./models");
+var Note = require("./models");
 
 var PORT = 3000;
 
 // Initialize Express
 var app = express();
+
+// Routes
+require("./routes/apiRoutes")(app);
 
 // Configure middleware
 
@@ -43,8 +48,6 @@ app.engine("handlebars", exphbs({
 }));
 app.set("view engine", "handlebars");
 
-// Routes
-require("./routes/apiRoutes")(app);
 
 // Start the server
 app.listen(PORT, function () {
