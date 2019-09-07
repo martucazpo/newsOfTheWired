@@ -2,7 +2,7 @@
 <div class="row">
   <div class="card col s10">
     <span id="titleinput" class="card-title">{{articles.title}}</span>
-    <form action="/articles/id:{{articles._id}}" method="post" id="dataid">
+    <form action="/articles/{{articles._id}}" method="post" id="dataid">
       <h5>Comment on this Article</h5>
       <div class="row">
         <div class="input-field">
@@ -21,8 +21,8 @@
   <div class="col s2"></div>
   <div class="col s8">
     <h6>Comments</h6>
-    {{#if data}}
-    {{#each data}}
+    {{#if articles.note}}
+    {{#each articles.note}}
     <div class="card">
       <p id="nameComment">{{name}}</p>
       <p>{{comment}}</p>

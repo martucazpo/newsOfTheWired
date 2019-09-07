@@ -1,12 +1,9 @@
 var db = require("../models");
-var Article = require("../models");
-var Note = require("../models");
 var axios = require("axios");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var express = require("express");
 var cheerio = require("cheerio");
-var app = express();
 
 
 module.exports = function (app) {
@@ -33,6 +30,8 @@ module.exports = function (app) {
         result.link = $(this)
           .children("a")
           .attr("href");
+      
+        result.note = [];
 
         // Create a new Article using the `result` object built from scraping
         db.Article.create(result)
@@ -57,6 +56,7 @@ module.exports = function (app) {
     // Grab every document in the Articles collection
     db.Article.find({})
       .then(function (data) {
+        console.log(data);
         // If we were able to successfully find Articles, send them back to the client
 
         res.render("index", {articles : data});
@@ -92,16 +92,18 @@ module.exports = function (app) {
 
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function (req, res) {
+    console.log(req.params.id)
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     db.Article.findOne({
       _id: req.params.id
     })
       // ..and populate all of the notes associated with it
-      .populate("notes","Note", function(err, dbArticle){console.log(dbArticle);})
-      .then(function (data) {
+      .populate("note")
+      .then(function (dbArticle) {
         // If we were able o successfully find an Article with the given id, send it back to the client
-        res.render("articles", {articles : data});
-        console.log("data is: " + data);
+        console.log("data is: " + dbArticle);
+        res.render("articles", {articles : dbArticle});
+        
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
@@ -119,22 +121,25 @@ module.exports = function (app) {
         // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
         // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
         console.log(dbNote);
-        return db.Article.findOneAndUpdate({
-          id: req.params.id
+        console.log(req.params.id)
+       return db.Article.findOneAndUpdate({
+          _id: req.params.id
+        },
+        {$push:{
+          note: dbNote._id}
         }, {
-          note: dbNote._id
-        }, {
-          new: true
+          new : true
         });
-      })
-      .then(function (dbArticle) {
+      }).then(function (dbArticle) {
         // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle)
+      console.log(dbArticle)
+      res.json(dbArticle);
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
         console.log(err);
       });
+      
   });
 
   app.get("/clearAll", function(req, res){
