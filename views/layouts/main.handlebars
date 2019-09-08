@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" ref="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Oswald" ref="stylesheet">
+    <link rel="stylesheet" href="/css/{{style}}">
     <title>News of the Wired</title>
 </head>
 
 <body>
     {{> nav/navbar}}
-    <main>
-        <div class="container">
+    <main id="mainView"> 
+        <div class="container" id="viewBody">
             {{{body}}}
         </div>
     </main>

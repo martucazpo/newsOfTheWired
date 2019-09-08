@@ -1,35 +1,49 @@
-
-<div class="row">
-  <div class="card col s10">
-    <span id="titleinput" class="card-title">{{articles.title}}</span>
-    <form action="/articles/{{articles._id}}" method="post" id="dataid">
-      <h5>Comment on this Article</h5>
-      <div class="row">
-        <div class="input-field">
-          <input id="nameinput" type="text" placeholder="Name" name="name" class="validate active">
-        </div>
-        <div class="input field">
-          <input id="bodyinput" type="text" placeholder="Comment" name="comment" class="validate active">
-        </div>
-        <center><input class="btn add-comment-button topnav" type="Submit" value="submit" id="savenote"></center>
-      </div>
+<div id="viewArticles">
+  <div class="row">
+    <div style="margin-top:20px"></div>
   </div>
-  </form>
-</div>
 
-<div class="row">
-  <div class="col s2"></div>
-  <div class="col s8">
-    <h6>Comments</h6>
-    {{#if articles.note}}
-    {{#each articles.note}}
-    <div class="card">
-      <p id="nameComment">{{name}}</p>
-      <p>{{comment}}</p>
+  <div class="row">
+    <div class="card col s12 light-blue accent-1">
+      <span id="titleinput" class="card-title">{{articles.title}}</span>
+      <form action="/articles/{{articles._id}}" method="post" id="dataid">
+        <h5>Comment on this Article</h5>
+        <div class="row">
+          <div class="input-field">
+            <input id="nameinput" type="text" placeholder="Name" name="name" class="validate active">
+          </div>
+          <div class="input field">
+            <input id="bodyinput" type="text" placeholder="Comment" name="comment" class="validate active">
+          </div>
+          <center><input class="btn add-comment-button topnav red lighten-2" type="Submit" value="submit" id="savenote"></center>
+        </div>
     </div>
-    {{/each}}
-    {{else}}
-    <p>No comments Yet.</p>
-    {{/if}}
+    </form>
   </div>
+
+  {{#if articles.note}}
+  {{#each articles.note}}
+  <div class="row">
+    <div class="card col s12 light-blue darken-3 white-text">
+      <div class="row">
+        <span class="card-title">Comments</span>
+        <h6 id="nameComment">{{name}}</h6>
+        <p>{{comment}}</p>
+        <div style="padding:5px;">
+        </div>
+        <div class="card-action">
+          <a>Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+  {{else}}
+  <div class=row>
+    <div class="col s2"></div>
+    <div class="card col s10">
+      <span class="card-title">No comments Yet.</span>
+    </div>
+  </div>
+  {{/if}}
 </div>

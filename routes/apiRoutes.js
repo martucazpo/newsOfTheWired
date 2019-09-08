@@ -59,7 +59,7 @@ module.exports = function (app) {
         console.log(data);
         // If we were able to successfully find Articles, send them back to the client
 
-        res.render("index", {articles : data});
+        res.render("index", {articles : data, style : "viewIndex.css"});
 
       })
       .catch(function (err) {
@@ -102,7 +102,7 @@ module.exports = function (app) {
       .then(function (dbArticle) {
         // If we were able o successfully find an Article with the given id, send it back to the client
         console.log("data is: " + dbArticle);
-        res.render("articles", {articles : dbArticle});
+        res.render("articles", {articles : dbArticle, style: "viewArticles.css"});
         
       })
       .catch(function (err) {
