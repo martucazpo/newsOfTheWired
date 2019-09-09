@@ -1,13 +1,16 @@
 $(document).ready(function () {
     console.log("ready");
 /*
-    if ($("#index")){
-        $("#mainView").attr("style", "background-image: url(../images/morocco-blue/morocco-blue.png)");
-    } else{
-        $("#mainView").attr("style", "background-image: url(../images/morocco/morocco.png)");
-    }
-
-    console.log("style");
-*/
+    $(document).on("click", "#deleteNote", function() {
+        var thisId = $(this).attr("data-id");
+        $.ajax({
+          method: "DELETE",
+          url: "/deletenote/" + thisId
+        })
+        .then(function(data) {
+          // Log the response
+          console.log(data);
+         // location.reload();
+        }); 
+    });*/
 });
-

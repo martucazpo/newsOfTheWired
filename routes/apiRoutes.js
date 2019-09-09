@@ -4,7 +4,13 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var express = require("express");
 var cheerio = require("cheerio");
-
+var bodyParser = require("body-parser");
+var urlencodedParser = bodyParser.urlencoded({
+  extended: false
+});
+var router = express.Router({
+  mergeParams: true
+});
 
 module.exports = function (app) {
   app.get("/", function (req, res) {
@@ -30,7 +36,7 @@ module.exports = function (app) {
         result.link = $(this)
           .children("a")
           .attr("href");
-      
+
         result.note = [];
 
         // Create a new Article using the `result` object built from scraping
@@ -59,14 +65,17 @@ module.exports = function (app) {
         console.log(data);
         // If we were able to successfully find Articles, send them back to the client
 
-        res.render("index", {articles : data, style : "viewIndex.css"});
+        res.render("index", {
+          articles: data,
+          style: "viewIndex.css"
+        });
 
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
         res.json(err);
       });
-    
+
   });
 
 
@@ -92,24 +101,27 @@ module.exports = function (app) {
 
   // Route for grabbing a specific Article by id, populate it with it's note
   app.get("/articles/:id", function (req, res) {
-    console.log(req.params.id)
+    console.log(req.params.id);
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     db.Article.findOne({
-      _id: req.params.id
-    })
+        _id: req.params.id
+      })
       // ..and populate all of the notes associated with it
       .populate("note")
       .then(function (dbArticle) {
         // If we were able o successfully find an Article with the given id, send it back to the client
         console.log("data is: " + dbArticle);
-        res.render("articles", {articles : dbArticle, style: "viewArticles.css"});
-        
+        res.render("articles", {
+          articles: dbArticle,
+          style: "viewArticles.css"
+        });
+
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
         res.json(err);
       });
-    
+
   });
 
   // Route for saving/updating an Article's associated Note
@@ -121,49 +133,63 @@ module.exports = function (app) {
         // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
         // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
         console.log(dbNote);
-        console.log(req.params.id)
-       return db.Article.findOneAndUpdate({
+        console.log(req.params.id);
+        return db.Article.findOneAndUpdate({
           _id: req.params.id
-        },
-        {$push:{
-          note: dbNote._id}
         }, {
-          new : true
+          $push: {
+            note: dbNote._id
+          }
+        }, {
+          new: true
         });
       }).then(function (dbArticle) {
         // If we were able to successfully update an Article, send it back to the client
-      console.log(dbArticle)
-      res.json(dbArticle);
+        console.log(dbArticle);
+        res.json(dbArticle);
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
         console.log(err);
       });
-      
+
   });
 
-  app.get("/clearAll", function(req, res){
-    db.Article.remove({}, function(err,doc){
-      if(err){
+  router.delete("/deletenote/:id", urlencodedParser, function (res, req) {
+    db.Note.deleteOne({
+      _id: req.params.id
+    }, function (err) {
+      if (err) {
         console.log(err);
+      } else {
+        console.log("removed note");
       }
-      else{
+    });
+
+  });
+
+
+
+  app.get("/clearAll", function (req, res) {
+    db.Article.remove({}, function (err, doc) {
+      if (err) {
+        console.log(err);
+      } else {
         console.log("removed all articles");
       }
     });
     res.redirect("/articles-json");
   });
 
-  app.get("/clearAllNotes", function(req, res){
-    db.Note.remove({}, function(err,doc){
-      if(err){
+  app.get("/clearAllNotes", function (req, res) {
+    db.Note.remove({}, function (err, doc) {
+      if (err) {
         console.log(err);
-      }
-      else{
+      } else {
         console.log("removed all notes");
       }
     });
     res.redirect("/articles-json");
-  });  
+  });
 
 };
