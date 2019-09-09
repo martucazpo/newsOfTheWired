@@ -1,3 +1,7 @@
 body{
     background-image: url(../images/morocco/morocco.png);
 }
+
+::placeholder{
+    color:white;
+}

@@ -146,7 +146,7 @@ module.exports = function (app) {
       }).then(function (dbArticle) {
         // If we were able to successfully update an Article, send it back to the client
         console.log(dbArticle);
-        res.json(dbArticle);
+        res.redirect("/articles/" + req.params.id);
       })
       .catch(function (err) {
         // If an error occurred, send it to the client
