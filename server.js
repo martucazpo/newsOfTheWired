@@ -1,6 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var mongoose_delete = require('mongoose-delete');
 var bodyParser = require("body-parser");
 
 

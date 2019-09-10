@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 
 // Save a reference to the Schema constructor
 var Schema = mongoose.Schema;
+var mongoose_delete = require('mongoose-delete');
 
 // Using the Schema constructor, create a new UserSchema object
 // This is similar to a Sequelize model
@@ -24,6 +25,8 @@ var ArticleSchema = new Schema({
     ref: "Note"
   }]
 });
+
+ArticleSchema.plugin(mongoose_delete);
 
 // This creates our model from the above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);

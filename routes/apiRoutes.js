@@ -2,6 +2,7 @@ var db = require("../models");
 var axios = require("axios");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var mongoose_delete = require('mongoose-delete');
 var express = require("express");
 var cheerio = require("cheerio");
 var bodyParser = require("body-parser");
@@ -155,20 +156,20 @@ module.exports = function (app) {
 
   });
 
-  router.delete("/deletenote/:id", urlencodedParser, function (res, req) {
+  app.delete("/deletenote/:id", function (req, res) {
+    var noteId = mongoose.Types.ObjectId(req.params.id);
     db.Note.deleteOne({
-      _id: req.params.id
-    }, function (err) {
-      if (err) {
+      _id :noteId
+    },function(err){
+      if ('Here is my error', err) {
         console.log(err);
+        res.send('errpr')
       } else {
         console.log("removed note");
+        res.send('success')
       }
     });
-
   });
-
-
 
   app.get("/clearAll", function (req, res) {
     db.Article.remove({}, function (err, doc) {

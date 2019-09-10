@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var mongoose_delete = require('mongoose-delete');
 
 // Save a reference to the Schema constructor
 var Schema = mongoose.Schema;
@@ -12,6 +13,8 @@ var NoteSchema = new Schema({
   name: String,
   comment: String,
 });
+
+NoteSchema.plugin(mongoose_delete);
 
 // This creates our model from the above schema, using mongoose's model method
 var Note = mongoose.model("Note", NoteSchema);
