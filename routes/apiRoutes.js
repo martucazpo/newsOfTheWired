@@ -156,17 +156,73 @@ module.exports = function (app) {
 
   });
 
+  app.get("/editNote/:id", function (req, res) {
+    console.log(req.params.id);
+    var noteId = mongoose.Types.ObjectId(req.params.id);
+    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+    db.Note.findOne({
+        _id: noteId
+      })
+      // ..and populate all of the notes associated with it
+      .populate("article")
+      .then(function (dbNote) {
+        // If we were able o successfully find an Article with the given id, send it back to the client
+        console.log("*******************************************");
+        console.log("data be: " + dbNote);
+        console.log("********************************************");
+        res.render("note", {
+          note: dbNote,
+          style: "note.css",
+          referer: req.headers.referer
+        });
+
+      })
+      .catch(function (err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+
+  });
+
+  app.post("/editNote/:id", function (req, res) {
+    var noteId = mongoose.Types.ObjectId(req.params.id);
+    console.log("inside post request!!!!");
+    // Create a new note and pass the req.body to the entry
+    db.Note.findOneAndUpdate({
+        _id: noteId
+      }, {
+        $set: {
+          name: req.body.name,
+          comment: req.body.comment
+        }
+      }, {
+        new: true,
+        upsert: true
+      })
+      .then(function (dbNote) {
+        // If we were able to successfully update an Article, send it back to the client
+        console.log(dbNote);
+        res.redirect(req.body.referer);
+      })
+      .catch(function (err) {
+        // If an error occurred, send it to the client
+        console.log(err);
+      });
+
+  });
+
+
   app.delete("/deletenote/:id", function (req, res) {
     var noteId = mongoose.Types.ObjectId(req.params.id);
     db.Note.deleteOne({
-      _id :noteId
-    },function(err){
+      _id: noteId
+    }, function (err) {
       if ('Here is my error', err) {
         console.log(err);
-        res.send('errpr')
+        res.send('error');
       } else {
         console.log("removed note");
-        res.send('success')
+        res.send('success');
       }
     });
   });

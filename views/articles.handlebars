@@ -32,7 +32,8 @@
         <p>{{comment}}</p>
         <div style="padding:5px;">
         </div>
-        <button id="deleteNote" data-id="{{this._id}}" class="btn add-comment-button topnav red lighten-2 white-text">Delete</button>
+        <button id="deleteNote" data-id="{{this._id}}" type="submit" class="btn add-comment-button topnav red lighten-2 white-text">Delete</button>
+        <a href="/editNote/{{this.id}}" id="editNote" data-id="{{this._id}}" type="submit" class="btn change-comment-button topnav red lighten-2 white-text">Edit</a>
       </div>
     </div>
   </div>

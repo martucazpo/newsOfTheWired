@@ -1,0 +1,27 @@
+ <div id="viewArticles">
+  <div class="row">
+    <div style="margin-top:20px"></div>
+  </div>
+
+  <div class="row">
+    <div class="card col s12 light-blue accent-1">
+      <span id="titleinput" class="card-title">Edit Comment</span>
+      <form action="/editNote/{{note._id}}" method="post" id={{note._id}}>
+      <div style="padding: 5px"></div>
+      <p>Name: {{note.name}}</p>
+      <div style="padding: 4px"></div>
+      <p>Comment: {{note.comment}}</p>
+        <div class="row">
+          <div class="input-field">
+            <input type="hidden" name="referer" value={{referer}}>
+            <input id="nameinput" type="text" placeholder="Name" name="name" class="validate active">
+          </div>
+          <div class="input field">
+            <input id="bodyinput" type="text" placeholder="Comment" name="comment" class="validate active">
+          </div>
+          <a href="/articles" class="btn return-home-button topnav red lighten-2" type="Submit" value="return to articles">Return to Articles</a>
+          <input class="btn edit-comment-button topnav red lighten-2" data-id={{note._id}} type="Submit" value="resubmit" id="editnote">
+        </div>
+    </div>
+    </form>
+  </div>
