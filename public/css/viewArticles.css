@@ -5,3 +5,11 @@ body{
 ::placeholder{
     color:white;
 }
+
+#gary{
+    visibility: hidden;
+}
+
+#marco{
+    visibility: hidden;
+}

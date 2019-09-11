@@ -1,3 +1,7 @@
 body{
     background-image: url(../images/morocco-blue/morocco-blue.png);
 }
+
+#isolde{
+    visibility: hidden;
+}
